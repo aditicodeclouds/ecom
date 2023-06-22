@@ -1,0 +1,40 @@
+<%- include('../includes/header.ejs') %>
+    <%- include('../includes/sub-header.ejs') %>
+
+        <div class="contact_section layout_padding">
+            <div class="container">
+                <h1 class="contact_text">Login</h1>
+                <% if (errorMessage!='') { %>
+                    <div class="user-message user-message--error"><%= errorMessage %></div>
+                <% } %>
+            </div>
+        </div>
+        <div class="contact_section_2 layout_padding">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8 padding_bottom_10">
+                        <div class="mail_section">
+                            <form class="login-form" action="/login" method="POST">
+                                <div class="email_text">
+                                    <div class="form-group">
+                                        <input type="text" class="email-bt" placeholder="Email" name="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="email-bt" placeholder="Password" name="password">
+                                    </div>
+                                    <div class="send_btn">
+                                        <div type="text" class="main_bt">
+                                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                            <button class="btn" type="submit">Login</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+        </div>
+        <%- include('../includes/footer.ejs') %>

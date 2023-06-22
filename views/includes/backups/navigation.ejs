@@ -1,0 +1,49 @@
+<div class="backdrop"></div>
+<header class="main-header">
+    <button id="side-menu-toggle">Menu</button>
+    <nav class="main-header__nav">
+        <ul class="main-header__item-list">
+            <% if (isAuthenticated) { %>
+                <li class="main-header__item">
+                    <a class="<%= path === '/profile' ? 'active' : '' %>" href="/profile">Profile</a>
+                </li>
+                <li class="main-header__item">
+                    <a class="<%= path === '/change_password' ? 'active' : '' %>" href="/change_password">Change Password</a>
+                </li>
+                <li class="main-header__item">
+                    <a class="" href="/logout">Logout</a>
+                </li>
+            <% } else { %>
+                <li class="main-header__item">
+                    <a class="<%= path === '/register' ? 'active' : '' %>" href="/register">Sign Up</a>
+                </li>
+                <li class="main-header__item">
+                    <a class="<%= path === '/login' ? 'active' : '' %>" href="/login">Login</a>
+                </li>
+            <% } %>
+        </ul>
+    </nav>
+</header>
+
+<nav class="mobile-nav">
+    <ul class="mobile-nav__item-list">
+        <% if (isAuthenticated) { %>
+            <li class="mobile-nav__item">
+                <a class="<%= path === '/profile' ? 'active' : '' %>" href="/profile">Profile</a>
+            </li>
+            <li class="mobile-nav__item">
+                <a class="<%= path === '/change_password' ? 'active' : '' %>" href="/change_password">Change Password</a>
+            </li>
+            <li class="mobile-nav__item">
+                <a class="" href="/logout">Logout</a>
+            </li>
+        <% } else { %>
+            <li class="mobile-nav__item">
+                <a class="<%= path === '/register' ? 'active' : '' %>" href="/">Sign Up</a>
+            </li>
+            <li class="mobile-nav__item">
+                <a class="<%= path === '/login' ? 'active' : '' %>" href="/login">Login</a>
+            </li>
+        <% } %>
+    </ul>
+</nav>

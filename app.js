@@ -1,0 +1,66 @@
+const path = require('path');
+const express = require('express');
+const bodyParser = require('body-parser');
+const errorController = require('./controllers/error');
+const sequelize = require('./util/database');
+const session = require('express-session');
+const csrf = require('csurf');
+const flash = require('connect-flash');
+
+const User = require('./models/user');
+const Product = require('./models/product');
+const Category = require('./models/category');
+const Wishlist = require('./models/wishlist');
+
+const app = express();
+const csrfProtection = csrf();
+app.set('view engine', 'ejs');
+app.set('views', 'views'); 
+
+const authRoutes = require('./routes/auth');
+const shopRoutes = require('./routes/shop');
+const profileRoutes = require('./routes/profile');
+const { count } = require('console');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+  secret:'geeksforgeeks',
+  saveUninitialized: true,
+  resave: true
+}));
+app.use(csrfProtection);
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.csrfToken = req.csrfToken();
+  res.locals.wishlistCount = 1;
+  if(req.session.isLoggedIn) {
+    Wishlist.findAll({
+      where: {
+        user_id: req.session.user.id
+      }
+    }).then(wData => {
+      if (wData) {
+        res.locals.wishlistCount = wData.length;
+      }
+    });
+  }
+  next();
+});
+
+app.use(authRoutes);
+app.use(shopRoutes);
+app.use(profileRoutes);
+
+app.use(errorController.get404);
+
+User.hasMany(Wishlist, {foreignKey: 'user_id'});
+Product.hasMany(Wishlist, {foreignKey: 'product_id'});
+//Product.hasOne(Category, {foreignKey: 'category_id'});
+//Category.hasMany(Product, {foreignKey: 'id'});
+
+
+app.listen(3000);
