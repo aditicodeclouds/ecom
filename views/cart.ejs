@@ -1,0 +1,49 @@
+<%- include('includes/header.ejs') %>
+<%- include('includes/sub-header.ejs') %>
+      
+      <div class="gallery_section layout_padding">
+         <div class="container">
+            <div class="row">
+               <div class="col-sm-12">
+                  <% if (errorMessage!='' ) { %>
+                     <div class="user-message user-message--error">
+                       <%= errorMessage %>
+                     </div>
+                  <% } %>
+                  <h1 class="gallery_taital">Wishlist</h1>
+                  <p class="gallery_text">A wish list is a tool to keep track of what you want. These lists are often organized by theme–for example, I've kept separate lists for potential travel destinations, wavy hair care products I want to try, and what I'm looking for in my next apartment.</p>
+               </div>
+            </div>
+            <div class="">
+               <div class="gallery_section_2">
+                  <div class="row">
+                     <% if (products.length > 0) { let counter = 0; %>
+                        <% for (let prod of products) { counter = counter+1; %>
+                           <% let row = counter%3; %>   
+                                 <div class="col-md-4 <%= row %>">
+                                    <a href="/remove-from-wishlist/<%= prod.id %>/wishlist">X</a>
+                                    <div class="container_main">
+                                       <img src="<%= prod.image %>" target="_blank" alt="Avatar" class="image">
+                                       <div class="overlay">
+                                          <div class="text"><a href="/product/<%= prod.id %>"><i class="fa fa-search" aria-hidden="true"></i></a></div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <% if (row == 0) { %>
+                                 </div>
+                              </div>                                    
+                              <div class="gallery_section_2">
+                                 <div class="row">
+                           <% } %>
+                        <% } %>
+                     <% } else { %>  
+                        <h1>You have not saved any product.</h1>
+                     <% } %>
+                  </div>
+               </div>             
+            </div>
+         </div>
+      </div>
+      
+
+<%- include('includes/footer.ejs') %>
