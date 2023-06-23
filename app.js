@@ -11,6 +11,7 @@ const User = require('./models/user');
 const Product = require('./models/product');
 const Category = require('./models/category');
 const Wishlist = require('./models/wishlist');
+const Cart = require('./models/wishlist');
 
 const app = express();
 const csrfProtection = csrf();
@@ -36,7 +37,7 @@ app.use(flash());
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;
   res.locals.csrfToken = req.csrfToken();
-  res.locals.wishlistCount = 1;
+  res.locals.wishlistCount = res.locals.cartCount = 0;
   if(req.session.isLoggedIn) {
     Wishlist.findAll({
       where: {
@@ -45,6 +46,15 @@ app.use((req, res, next) => {
     }).then(wData => {
       if (wData) {
         res.locals.wishlistCount = wData.length;
+      }
+    });
+    Cart.findAll({
+      where: {
+        user_id: req.session.user.id
+      }
+    }).then(cData => {
+      if (cData) {
+        res.locals.cartlistCount = cData.length;
       }
     });
   }

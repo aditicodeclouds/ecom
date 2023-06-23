@@ -35,6 +35,7 @@ exports.postProfile = async (req, res, next) => {
   if (req.session.isLoggedIn) {
     const name = req.body.name;
     const email = req.body.email;
+    const full_address = req.body.full_address;
     const userId = req.session.user.id;
     let errorMessage = successMessage = '';
     if (name == '') {
@@ -42,6 +43,9 @@ exports.postProfile = async (req, res, next) => {
     }
     if (!emailvalidator.validate(email)) {
       errorMessage += 'Please enter valid email! / ';
+    }
+    if (full_address == '') {
+      errorMessage += 'Address can not be blank! / ';
     }
     if (errorMessage != '') {
       req.flash('error', errorMessage);
@@ -62,8 +66,9 @@ exports.postProfile = async (req, res, next) => {
 
     try {
       const user = await User.findByPk(userId);
-      user.name = req.body.name;
-      user.email = req.body.email;
+      user.name = name;
+      user.email = email;
+      user.full_address = full_address;
       user.save();
       req.session.user = user;
       req.session.save(err => {

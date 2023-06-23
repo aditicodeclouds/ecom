@@ -254,6 +254,7 @@ exports.getCart = async (req, res, next) => {
         pageTitle: 'Cart',
         products: products,
         errorMessage: message,
+        address: req.session.user.full_address,
       });
     } else {
       return res.redirect('/login');

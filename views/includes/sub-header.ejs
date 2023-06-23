@@ -26,7 +26,10 @@
                            <a class="nav-link" href="/logout">Logout</a>
                         </li>
                         <li class="nav-item">
-                           <a class="nav-link" href="/wishlist"><i class="fa-regular fa-heart"></i><span><%= wishlistCount %></span></a>
+                           <a class="nav-link" href="/wishlist"><i class="fa-solid fa-heart"></i><span><%= wishlistCount %></span></a>
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link" href="/cart"><i class="fa-solid fa-cart-shopping"></i><span><%= cartCount %></span></a>
                         </li>
                      <% } else { %>                        
                         <li class="nav-item <%= path === '/register' ? 'active' : '' %>">

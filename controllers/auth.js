@@ -70,7 +70,7 @@ exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   User.findOne({
-    where: { email: email },
+    where: { email: email, type: 'User' },
   })
     .then(user => {
       if (!user) {

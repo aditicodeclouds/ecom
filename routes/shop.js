@@ -22,7 +22,7 @@ router.get('/add-to-cart/:productId', shopController.getAddToCart);
 
 router.get('/remove-from-cart/:productId/:path', shopController.getRemoveFromCart);
 
-router.get('/cart', shopController.getWishlist);
+router.get('/cart', shopController.getCart);
 
 module.exports = router;
 
