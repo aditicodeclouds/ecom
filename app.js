@@ -59,6 +59,7 @@ app.use(errorController.get404);
 
 User.hasMany(Wishlist, {foreignKey: 'user_id'});
 Product.hasMany(Wishlist, {foreignKey: 'product_id'});
+Wishlist.hasMany(Product, {foreignKey: 'id'});
 //Product.hasOne(Category, {foreignKey: 'category_id'});
 //Category.hasMany(Product, {foreignKey: 'id'});
 

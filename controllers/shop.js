@@ -63,7 +63,7 @@ exports.getProduct = async (req, res, next) => {
   }
 };
 
-exports.getAddToWishlistProduct = async (req, res, next) => {
+exports.getAddToWishlist = async (req, res, next) => {
   try {
     if (req.session.isLoggedIn) {
       const prodId = req.params.productId;
@@ -89,16 +89,19 @@ exports.getAddToWishlistProduct = async (req, res, next) => {
         req.flash('error', errorMessage);
         return res.redirect('/product/' + prodId);
       });
+    } else {
+      return res.redirect('/login');
     }
   } catch (err) {
     console.log(err);
   }
 };
 
-exports.getRemoveFromWishlistProduct = async (req, res, next) => {
+exports.getRemoveFromWishlist = async (req, res, next) => {
   try {
     if (req.session.isLoggedIn) {
       const prodId = req.params.productId;
+      const callingPath = req.params.path;
       const userId = req.session.user.id;
       let errorMessage = '';
 
@@ -120,8 +123,140 @@ exports.getRemoveFromWishlistProduct = async (req, res, next) => {
           errorMessage = 'Sorry somthing is going wrong';
         }
         req.flash('error', errorMessage);
+        if(callingPath == 'wishlist') {
+          return res.redirect('/wishlist');
+        } else {
+          return res.redirect('/product/' + prodId);
+        }
+      });
+    } else {
+      return res.redirect('/login');
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.getWishlist = async (req, res, next) => {
+  try {
+    if (req.session.isLoggedIn) {
+      let message = req.flash('error');
+      const userId = req.session.user.id;
+      const products = await Product.findAll({
+        where: { active_status: 'Y' }, 
+        include: [{model: Wishlist,
+          where: {user_id: userId}
+         }]
+      });
+      res.render('wishlist', {
+        path: '/wishlist',
+        pageTitle: 'Wishlist',
+        products: products,
+        errorMessage: message,
+      });
+    } else {
+      return res.redirect('/login');
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+
+exports.getAddToCart = async (req, res, next) => {
+  try {
+    if (req.session.isLoggedIn) {
+      const prodId = req.params.productId;
+      const userId = req.session.user.id;
+      let errorMessage = '';
+
+      Wishlist.findOne({
+        where: {
+          user_id: userId,
+          product_id: prodId
+        },
+      }).then(userData => {
+        if (!userData) {
+          const wishlist = new Wishlist({
+            user_id: userId,
+            product_id: prodId
+          });
+          const data = wishlist.save();
+          if (!data) {
+            errorMessage = 'Sorry somthing is going wrong';
+          }
+        }
+        req.flash('error', errorMessage);
         return res.redirect('/product/' + prodId);
       });
+    } else {
+      return res.redirect('/login');
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.getRemoveFromCart = async (req, res, next) => {
+  try {
+    if (req.session.isLoggedIn) {
+      const prodId = req.params.productId;
+      const callingPath = req.params.path;
+      const userId = req.session.user.id;
+      let errorMessage = '';
+
+      Wishlist.findOne({
+        where: {
+          user_id: userId,
+          product_id: prodId
+        },
+      }).then(userData => {
+        if (userData) {
+          const data = Wishlist.destroy({
+            where: { user_id: userId,
+            product_id: prodId }
+          });
+          if (!data) {
+            errorMessage = 'Sorry somthing is going wrong';
+          }
+        } else {
+          errorMessage = 'Sorry somthing is going wrong';
+        }
+        req.flash('error', errorMessage);
+        if(callingPath == 'cart') {
+          return res.redirect('/cart');
+        } else {
+          return res.redirect('/product/' + prodId);
+        }
+      });
+    } else {
+      return res.redirect('/login');
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.getCart = async (req, res, next) => {
+  try {
+    if (req.session.isLoggedIn) {
+      let message = req.flash('error');
+      const userId = req.session.user.id;
+      const products = await Product.findAll({
+        where: { active_status: 'Y' }, 
+        include: [{model: Wishlist,
+          where: {user_id: userId}
+         }]
+      });
+      res.render('cart', {
+        path: '/cart',
+        pageTitle: 'Cart',
+        products: products,
+        errorMessage: message,
+      });
+    } else {
+      return res.redirect('/login');
     }
   } catch (err) {
     console.log(err);
