@@ -11,7 +11,7 @@ const User = require('./models/user');
 const Product = require('./models/product');
 const Category = require('./models/category');
 const Wishlist = require('./models/wishlist');
-const Cart = require('./models/wishlist');
+const Cart = require('./models/cart');
 
 const app = express();
 const csrfProtection = csrf();
@@ -70,6 +70,9 @@ app.use(errorController.get404);
 User.hasMany(Wishlist, {foreignKey: 'user_id'});
 Product.hasMany(Wishlist, {foreignKey: 'product_id'});
 Wishlist.hasMany(Product, {foreignKey: 'id'});
+User.hasMany(Cart, {foreignKey: 'user_id'});
+Product.hasMany(Cart, {foreignKey: 'product_id'});
+Cart.hasMany(Product, {foreignKey: 'id'});
 //Product.hasOne(Category, {foreignKey: 'category_id'});
 //Category.hasMany(Product, {foreignKey: 'id'});
 

@@ -24,5 +24,7 @@ router.get('/remove-from-cart/:productId/:path', shopController.getRemoveFromCar
 
 router.get('/cart', shopController.getCart);
 
+router.get('/order', shopController.getOrder);
+
 module.exports = router;
 
