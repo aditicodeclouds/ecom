@@ -12,10 +12,10 @@ const Product = sequelize.define('product', {
   name: Sequelize.STRING,
   category_id: Sequelize.INTEGER,
   image: Sequelize.TEXT,
-  price: Sequelize.DECIMAL,
+  price: Sequelize.FLOAT,
   description: Sequelize.TEXT,
   stock: Sequelize.INTEGER,
-  rating: Sequelize.DECIMAL,
+  rating: Sequelize.FLOAT,
   active_status: Sequelize.CHAR,
 });
 

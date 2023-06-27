@@ -12,6 +12,7 @@ const Product = require('./models/product');
 const Category = require('./models/category');
 const Wishlist = require('./models/wishlist');
 const Cart = require('./models/cart');
+const Order = require('./models/order');
 
 const app = express();
 const csrfProtection = csrf();
@@ -46,8 +47,9 @@ app.use((req, res, next) => {
     }).then(wData => {
       if (wData) {
         res.locals.wishlistCount = wData.length;
-      }
+      } 
     });
+           
     Cart.findAll({
       where: {
         user_id: req.session.user.id
@@ -73,6 +75,9 @@ Wishlist.hasMany(Product, {foreignKey: 'id'});
 User.hasMany(Cart, {foreignKey: 'user_id'});
 Product.hasMany(Cart, {foreignKey: 'product_id'});
 Cart.hasMany(Product, {foreignKey: 'id'});
+User.hasMany(Order, {foreignKey: 'user_id'});
+Product.hasMany(Order, {foreignKey: 'product_id'});
+Order.hasMany(Product, {foreignKey: 'id'});
 //Product.hasOne(Category, {foreignKey: 'category_id'});
 //Category.hasMany(Product, {foreignKey: 'id'});
 

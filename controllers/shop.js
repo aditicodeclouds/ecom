@@ -2,6 +2,7 @@ const Banner = require('../models/banner');
 const Product = require('../models/product');
 const Wishlist = require('../models/wishlist');
 const Cart = require('../models/cart');
+const Order = require('../models/order');
 
 
 exports.getHome = async (req, res, next) => {
@@ -257,7 +258,6 @@ exports.getCart = async (req, res, next) => {
           where: {user_id: userId}
          }]
       });
-      console.log(products);
       res.render('cart', {
         path: '/cart',
         pageTitle: 'Cart',
@@ -285,11 +285,41 @@ exports.getOrder = async (req, res, next) => {
           where: {user_id: userId}
          }]
       });
+      let random = (Math.random() * (99999999 - 10000000 + 1) + 10000000);
+      const orderNumber = 'OD'+random;
+      if (products.length> 0) {
+        for (let prod of products) {
+          const order = new Order({
+            order_number: orderNumber,
+            user_id: userId,
+            product_id: prod.id,
+            product_price: prod.price,
+            qty: 1,
+            full_address: req.session.user.full_address,
+            status: 'Confirmed'
+          });
+          order.save();
+          const productU = await Product.findByPk(prod.id);
+          productU.qty = productU.qty-1;
+          productU.qty.save();
+        }
+        const cartDel = await Cart.destroy({
+          where: { user_id: userId }
+        });
+      }
+      const orders = await Product.findAll({ 
+        include: [{model: Order,
+          where: { user_id: userId,
+          order_number: orderNumber }
+         }]
+      });
       
       res.render('thank-you', {
         path: '/thank-you',
         pageTitle: 'Thank You',
-        products: products,
+        products: orders,
+        address: req.session.user.full_address,
+        order_number: orderNumber,
         errorMessage: message
       });
     } else {
