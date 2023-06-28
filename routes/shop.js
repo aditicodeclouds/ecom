@@ -26,5 +26,9 @@ router.get('/cart', shopController.getCart);
 
 router.get('/order', shopController.getOrder);
 
+router.get('/thank-you/:order_number', shopController.getThankyou);
+
+router.get('/orders', shopController.getOrders);
+
 module.exports = router;
 

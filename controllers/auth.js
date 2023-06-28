@@ -15,7 +15,7 @@ exports.postRegister = (req, res, next) => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    const confirmPassword = req.body.confirmPassword;
+    const confirmPassword = req.body.confirm_password;
     let errorMessage = '';
     if (name == '') {
       errorMessage += 'Name can not be blank! / ';
@@ -23,8 +23,7 @@ exports.postRegister = (req, res, next) => {
     if(!emailvalidator.validate(email)){
       errorMessage += 'Please enter valid email! / ';
     }
-    //if (password == '' || confirmPassword == '' || password != confirmPassword) {
-    if (password == '' || confirmPassword == '') {
+    if (password == '' || confirmPassword == '' || password != confirmPassword) {
       errorMessage += 'Password does not matched! / ';
     }
     if(errorMessage != '') {

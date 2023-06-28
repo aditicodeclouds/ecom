@@ -3,6 +3,7 @@ const Product = require('../models/product');
 const Wishlist = require('../models/wishlist');
 const Cart = require('../models/cart');
 const Order = require('../models/order');
+const date = require('date-and-time');
 
 
 exports.getHome = async (req, res, next) => {
@@ -289,7 +290,7 @@ exports.getOrder = async (req, res, next) => {
       const orderNumber = 'OD'+random;
       if (products.length> 0) {
         for (let prod of products) {
-          const order = new Order({
+          const order = await new Order({
             order_number: orderNumber,
             user_id: userId,
             product_id: prod.id,
@@ -300,13 +301,27 @@ exports.getOrder = async (req, res, next) => {
           });
           order.save();
           const productU = await Product.findByPk(prod.id);
-          productU.qty = productU.qty-1;
-          productU.qty.save();
+          productU.stock = productU.stock-1;
+          productU.save();
         }
         const cartDel = await Cart.destroy({
           where: { user_id: userId }
         });
       }
+      return res.redirect('/thank-you/'+orderNumber);
+    } else {
+      return res.redirect('/login');
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.getThankyou = async (req, res, next) => {
+  try {
+    if (req.session.isLoggedIn) {
+      const orderNumber = req.params.order_number;
+      const userId = req.session.user.id;
       const orders = await Product.findAll({ 
         include: [{model: Order,
           where: { user_id: userId,
@@ -319,8 +334,7 @@ exports.getOrder = async (req, res, next) => {
         pageTitle: 'Thank You',
         products: orders,
         address: req.session.user.full_address,
-        order_number: orderNumber,
-        errorMessage: message
+        order_number: orderNumber
       });
     } else {
       return res.redirect('/login');
@@ -328,4 +342,27 @@ exports.getOrder = async (req, res, next) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+exports.getOrders = async (req, res, next) => {
+  try {
+    if (req.session.isLoggedIn) {
+      const userId = req.session.user.id;
+      const orders = await Order.findAll({
+        where: { user_id: userId }, 
+        include: [{model: Product}]
+      });
+      console.log(orders);
+      res.render('orders', {
+        path: '/orders',
+        pageTitle: 'Order History',
+        orders: orders,
+        date: date,
+      });
+    } else {
+      return res.redirect('/login');
+    }
+  } catch (err) {
+    console.log(err);
+  } 
 };

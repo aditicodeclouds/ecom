@@ -18,7 +18,9 @@ const Order = sequelize.define('order', {
   status: {
     type:   Sequelize.ENUM,
     values: ['Confirmed', 'Shipped', 'Delivered']
-  }
+  },
+  shippedAt: Sequelize.STRING,
+  deliveredAt: Sequelize.STRING,
 });
  
 module.exports = Order;
