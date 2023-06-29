@@ -15,17 +15,17 @@
                   <div class="m-4">
                     <h4 class="card-title mb-4">Your shopping cart</h4>
 
-                    <% let total = 0; if (products.length> 0) { %>
-                      <% for (let prod of products) { total = parseFloat(total) + parseFloat(prod.price); %>
+                    <% let total = 0; if (carts.length> 0) { %>
+                      <% for (let cart of carts) { total = parseFloat(total) + parseFloat(cart.product.dataValues.price); %>
                         <div class="row gy-3 mb-4">
                           <div class="col-lg-5">
                             <div class="me-lg-5">
                               <div class="d-flex">
-                                <img src="<%= prod.image %>"
+                                <img src="<%= cart.product.dataValues.image %>"
                                   class="border rounded me-3" style="width: 96px; height: 96px;" />
                                 <div class="">
-                                  <a href="/product/<%= prod.id %>" class="nav-link"><%= prod.name %></a>
-                                  <p class="text-muted">$<%= prod.price %></p>
+                                  <a href="/product/<%= cart.product.dataValues.id %>" class="nav-link"><%= cart.product.dataValues.name %></a>
+                                  <p class="text-muted">$<%= cart.product.dataValues.price %></p>
                                 </div>
                               </div>
                             </div>
@@ -35,7 +35,7 @@
                               <select style="width: 100px;" class="form-select me-4">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
-                                <option value="<%= prod.carts.qty %>"><%= prod.carts.qty %></option>
+                                <option value="<%= cart.qty %>"><%= cart.qty %></option>
                                 <option value="4">4</option>
                               </select>
                             </div>
@@ -49,7 +49,7 @@
                             <div class="float-md-end">
                               <!--<a href="#" class="btn btn-light border px-2 icon-hover-primary"><i
                                   class="fas fa-heart fa-lg px-1 text-secondary"></i></a>-->
-                              <a href="/remove-from-cart/<%= prod.id %>/cart" class="btn btn-light border icon-hover-danger"> Remove</a>
+                              <a href="/remove-from-cart/<%= cart.product.dataValues.id %>/cart" class="btn btn-light border icon-hover-danger"> Remove</a>
                             </div>
                           </div>
                         </div>
@@ -72,7 +72,7 @@
               </div>
               <!-- cart -->
               <!-- summary -->
-              <% if (products.length> 0) { %>
+              <% if (carts.length> 0) { %>
               <div class="col-lg-3">
                 <div class="card mb-3 border shadow-0">
                   <!--<div class="card-body">

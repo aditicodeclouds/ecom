@@ -72,14 +72,17 @@ app.use(errorController.get404);
 User.hasMany(Wishlist, {foreignKey: 'user_id'});
 Product.hasMany(Wishlist, {foreignKey: 'product_id'});
 Wishlist.hasMany(Product, {foreignKey: 'id'});
+
 User.hasMany(Cart, {foreignKey: 'user_id'});
 Product.hasMany(Cart, {foreignKey: 'product_id'});
-Cart.hasMany(Product, {foreignKey: 'id'});
+Cart.belongsTo(Product, {foreignKey: 'product_id'});
+
 User.hasMany(Order, {foreignKey: 'user_id'});
 Product.hasMany(Order, {foreignKey: 'product_id'});
-Order.hasMany(Product, {foreignKey: 'id'});
-//Product.hasOne(Category, {foreignKey: 'category_id'});
-//Category.hasMany(Product, {foreignKey: 'id'});
+Order.belongsTo(Product, {foreignKey: 'product_id'});
+
+Category.hasMany(Product, {foreignKey: 'category_id'});
+Product.belongsTo(Category, {foreignKey: 'category_id'});
 
 
 app.listen(3000);

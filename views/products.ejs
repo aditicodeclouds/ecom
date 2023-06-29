@@ -10,6 +10,14 @@
                </div>
             </div>
             <div class="">
+               <% if (categories.length > 0) { %>
+                  <select id="filter_by_category">
+                     <option value="all">Filter by category</option>
+                     <% for (let cat of categories) { %>
+                        <option value="<%= cat.id %>"><%= cat.name %></option>
+                     <% } %>
+                  </select>
+               <% } %>
                <div class="gallery_section_2">
                   <div class="row">
                      <% if (products.length > 0) { let counter = 0; %>

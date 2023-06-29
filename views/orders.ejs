@@ -10,15 +10,15 @@
 
                     <% if (orders.length> 0) { %>
                       <% for (let order of orders) { %>                        
-                        <h4 class="card-title mb-4 text-success">Order Number # <%= order.order_number %></h4>
+                        <h4 class="card-title mb-4 text-success">Order Number #  <%= order.order_number %></h4>
                         <div class="row gy-3 mb-4">
                           <div class="col-lg-5">
                             <div class="me-lg-5">
                               <div class="d-flex">
-                                <img src="<%= order.products.image %>"
+                                <img src="<%= order.product.dataValues.image %>"
                                   class="border rounded me-3" style="width: 96px; height: 96px;" />
                                 <div class="">
-                                  <a href="/product/<%= order.product_id %>" class="nav-link"><%= order.products.name %></a>
+                                  <a href="/product/<%= order.product_id %>" class="nav-link"><%= order.product.dataValues.name %></a>
                                   <p class="text-muted">$<%= order.product_price %> | <%= order.qty %></p>
                                 </div>
                               </div>
