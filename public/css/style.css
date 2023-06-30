@@ -1054,3 +1054,6 @@ a:hover {
   .icon-hover-danger:hover i {
     color: #dc4c64 !important;
   }
+  .cart-disabled {
+  background-color: rgb(174 167 167 / 50%);
+}

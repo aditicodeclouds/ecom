@@ -5,6 +5,7 @@ const Cart = require('../models/cart');
 const Order = require('../models/order');
 const date = require('date-and-time');
 const Category = require('../models/category');
+const Op = require('sequelize').Op;
 
 
 exports.getHome = async (req, res, next) => {
@@ -219,6 +220,41 @@ exports.getAddToCart = async (req, res, next) => {
   }
 };
 
+exports.getUpdateCart = async (req, res, next) => {
+  try {
+    if (req.session.isLoggedIn) {
+      const cartId = req.params.cartId;
+      const cartQty = req.params.cartQty;
+      const userId = req.session.user.id;
+      let errorMessage = '';
+
+      const cart = await Cart.findOne({
+        where: {id: cartId}
+      });
+      if(cart) {
+        if(cart.user_id == userId) {
+            cart.qty = cartQty;
+            if(!cart.save()) {
+              errorMessage = 'Something is going wrong.';
+            }
+        } else {
+          errorMessage = 'Authentication error.';
+        }
+      } else {
+        errorMessage = 'Something is going wrong.';
+      }
+
+      req.flash('error', errorMessage);
+      return res.redirect('/cart');
+      
+    } else {
+      return res.redirect('/login');
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 exports.getRemoveFromCart = async (req, res, next) => {
   try {
     if (req.session.isLoggedIn) {
@@ -293,7 +329,7 @@ exports.getOrder = async (req, res, next) => {
       let message = req.flash('error');
       const userId = req.session.user.id;
       const products = await Product.findAll({
-        where: { active_status: 'Y' }, 
+        where: { active_status: 'Y', stock: { [Op.gt]: 0 } }, 
         include: [{model: Cart,
           where: {user_id: userId}
          }]

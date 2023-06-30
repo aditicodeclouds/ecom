@@ -20,6 +20,8 @@ router.get('/wishlist', shopController.getWishlist);
 
 router.get('/add-to-cart/:productId', shopController.getAddToCart);
 
+router.get('/update-cart/:cartId/:cartQty', shopController.getUpdateCart);
+
 router.get('/remove-from-cart/:productId/:path', shopController.getRemoveFromCart);
 
 router.get('/cart', shopController.getCart);

@@ -16,8 +16,12 @@
                     <h4 class="card-title mb-4">Your shopping cart</h4>
 
                     <% let total = 0; if (carts.length> 0) { %>
-                      <% for (let cart of carts) { total = parseFloat(total) + parseFloat(cart.product.dataValues.price); %>
-                        <div class="row gy-3 mb-4">
+                      <% for (let cart of carts) {
+                        if(cart.product.dataValues.stock > 1) {
+                          total = parseFloat(total) + (parseFloat(cart.product.dataValues.price)*parseFloat(cart.qty));
+                        }
+                      %>
+                        <div class="row gy-3 mb-4 <%= ((cart.product.dataValues.stock > 1) ? '' : 'cart-disabled') %>">
                           <div class="col-lg-5">
                             <div class="me-lg-5">
                               <div class="d-flex">
@@ -32,12 +36,17 @@
                           </div>
                           <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
                             <div class="">
-                              <select style="width: 100px;" class="form-select me-4">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="<%= cart.qty %>"><%= cart.qty %></option>
-                                <option value="4">4</option>
-                              </select>
+                              <% if(cart.product.dataValues.stock > 1) { %>
+                              <select style="width: 100px;" class="form-select me-4 cartQty" id="<%= cart.id %>">
+                                  <%
+                                  let stock_limit = (cart.product.dataValues.stock < 5 ? cart.product.dataValues.stock : 5);
+                                  for(var i=1; i <= stock_limit; i++) { %>
+                                    <option <%= (cart.qty == i) ? 'selected' : '' %> value="<%= i %>" ><%= i %></option>
+                                  <% } %>
+                                </select>
+                                <% } else { %>
+                                  <span class="text-error small">please remove stock out item</span>
+                                <% } %>
                             </div>
                             <div class="">
                               <!--<text class="h6">Yellow, Jeans</text> <br />

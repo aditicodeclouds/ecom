@@ -38,7 +38,7 @@ app.use(flash());
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;
   res.locals.csrfToken = req.csrfToken();
-  res.locals.wishlistCount = res.locals.cartCount = 0;
+  res.locals.wishlistCount = res.locals.cartlistCount = 0;
   if(req.session.isLoggedIn) {
     Wishlist.findAll({
       where: {
