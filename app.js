@@ -22,6 +22,7 @@ app.set('views', 'views');
 const authRoutes = require('./routes/auth');
 const shopRoutes = require('./routes/shop');
 const profileRoutes = require('./routes/profile');
+const adminRoutes = require('./routes/admin');
 const { count } = require('console');
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -30,16 +31,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret:'geeksforgeeks',
   saveUninitialized: true,
-  resave: true
+  resave: true 
 }));
 app.use(csrfProtection);
 app.use(flash());
 
 app.use((req, res, next) => {
-  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.isAuthenticated = req.session.isLoggedIn;  
   res.locals.csrfToken = req.csrfToken();
   res.locals.wishlistCount = res.locals.cartlistCount = 0;
   if(req.session.isLoggedIn) {
+    res.locals.loggedAdmin = req.session.user.name;
     Wishlist.findAll({
       where: {
         user_id: req.session.user.id
@@ -66,6 +68,7 @@ app.use((req, res, next) => {
 app.use(authRoutes);
 app.use(shopRoutes);
 app.use(profileRoutes);
+app.use('/admin', adminRoutes);
 
 app.use(errorController.get404);
 
