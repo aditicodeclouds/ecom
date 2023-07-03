@@ -1,7 +1,13 @@
 const User = require('../models/user');
+const Banner = require('../models/banner');
+const Product = require('../models/product');
+const Category = require('../models/category');
+
+
 const bcrypt = require("bcrypt");
 const emailvalidator = require("email-validator");
 const Op = require('sequelize').Op;
+const date = require('date-and-time');
 
 exports.getLogin = (req, res, next) => {
   let message = req.flash('error');
@@ -200,15 +206,15 @@ exports.postChangePassword = async (req, res, next) => {
             .then(doMatch => {
               if (doMatch) {
                 return bcrypt
-                .hash(newPassword, 12)
-                .then(hashedPassword => {
-                  user.password = hashedPassword;
-                  user.save();
-                })
-                .then(result => {
-                  req.flash('success', 'Data saved successfully.');
-                  res.redirect('/admin/change_password');
-                });
+                  .hash(newPassword, 12)
+                  .then(hashedPassword => {
+                    user.password = hashedPassword;
+                    user.save();
+                  })
+                  .then(result => {
+                    req.flash('success', 'Data saved successfully.');
+                    res.redirect('/admin/change_password');
+                  });
               }
               req.flash('error', 'Invalid current password.');
               res.redirect('/admin/change_password');
@@ -225,10 +231,224 @@ exports.postChangePassword = async (req, res, next) => {
 
 
 exports.getDashboard = (req, res, next) => {
-  let message = req.flash('error');
-  res.render('admin/dashboard', {
-    path: '/dashboard',
-    pageTitle: 'Dashboard',
-    errorMessage: message
-  });
+  if (req.session.isLoggedIn) {
+    let message = req.flash('error');
+    res.render('admin/dashboard', {
+      path: '/dashboard',
+      pageTitle: 'Dashboard',
+      errorMessage: message
+    });
+  } else {
+    res.redirect('/admin/login');
+  }
+};
+
+exports.getBanners = async (req, res, next) => {
+  if (req.session.isLoggedIn) {
+    try {
+      let message = req.flash('error');
+      let sMessage = req.flash('success');
+      const banners = await Banner.findAll();
+
+      res.render('admin/banner/list', {
+        path: '/admin/banners',
+        pageTitle: 'Banner',
+        banners: banners,
+        date: date,
+        errorMessage: message,
+        successmessage: sMessage
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  } else {
+    res.redirect('/admin/login');
+  }
+};
+
+exports.getBanner = async (req, res, next) => {
+  if (req.session.isLoggedIn) {
+    try {
+      let message = req.flash('error');
+      let sMessage = req.flash('success');
+      const id = req.params.id;
+      let banner = [];
+      if (id != 'add') {
+        banner = await Banner.findOne({
+          where: { id: id },
+        });
+      }
+      res.render('admin/banner/form', {
+        path: '/admin/banner',
+        pageTitle: 'Banner',
+        banner: banner,
+        date: date,
+        errorMessage: message,
+        successmessage: sMessage,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  } else {
+    res.redirect('/admin/login');
+  }
+};
+
+exports.postBanner = async (req, res, next) => {
+  if (req.session.isLoggedIn) {
+    try {
+      let errorMessage = '';
+      console.log(req.body);
+      const id = req.body.id;
+      if (req.body.banner_heading1 == '') {
+        errorMessage += 'Heading1 can not be blank! / ';
+      }
+      if (req.body.banner_description == '') {
+        errorMessage += 'Description can not be blank! / ';
+      }
+      if (errorMessage != '') {
+        req.flash('error', errorMessage);
+        return res.redirect('/admin/banner/' + (id == '' ? 'add' : id));
+      }
+
+      let banner = new Banner();
+      if (id != '') {
+        banner = await Banner.findByPk(id);
+      }
+      banner.banner_heading1 = req.body.banner_heading1;
+      banner.banner_heading2 = req.body.banner_heading2;
+      banner.banner_description = req.body.banner_description;
+      banner.banner_link = req.body.banner_link;
+      banner.active_status = req.active_status;
+      let data = banner.save();
+
+      if (data) {
+        req.flash('success', 'Data saved successfully.');
+      } else {
+        req.flash('error', 'Something is going wrong. Please try again.');
+      }
+      res.redirect('/admin/banner/' + banner.id);
+    } catch (err) {
+      console.log(err);
+    }
+  } else {
+    res.redirect('/admin/login');
+  }
+};
+
+exports.getBannerDelete = async (req, res, next) => {
+  if (req.session.isLoggedIn) {
+    let message = req.flash('error');
+    res.render('admin/dashboard', {
+      path: '/dashboard',
+      pageTitle: 'Dashboard',
+      errorMessage: message
+    });
+  } else {
+    res.redirect('/admin/login');
+  }
+};
+
+exports.getProducts = async (req, res, next) => {
+  if (req.session.isLoggedIn) {
+    let message = req.flash('error');
+    res.render('admin/dashboard', {
+      path: '/dashboard',
+      pageTitle: 'Dashboard',
+      errorMessage: message
+    });
+  } else {
+    res.redirect('/admin/login');
+  }
+};
+
+exports.getProduct = async (req, res, next) => {
+  if (req.session.isLoggedIn) {
+    let message = req.flash('error');
+    res.render('admin/dashboard', {
+      path: '/dashboard',
+      pageTitle: 'Dashboard',
+      errorMessage: message
+    });
+  } else {
+    res.redirect('/admin/login');
+  }
+};
+
+exports.postProduct = async (req, res, next) => {
+  if (req.session.isLoggedIn) {
+    let message = req.flash('error');
+    res.render('admin/dashboard', {
+      path: '/dashboard',
+      pageTitle: 'Dashboard',
+      errorMessage: message
+    });
+  } else {
+    res.redirect('/admin/login');
+  }
+};
+
+exports.getProductDelete = async (req, res, next) => {
+  if (req.session.isLoggedIn) {
+    let message = req.flash('error');
+    res.render('admin/dashboard', {
+      path: '/dashboard',
+      pageTitle: 'Dashboard',
+      errorMessage: message
+    });
+  } else {
+    res.redirect('/admin/login');
+  }
+};
+
+exports.getCategories = async (req, res, next) => {
+  if (req.session.isLoggedIn) {
+    let message = req.flash('error');
+    res.render('admin/dashboard', {
+      path: '/dashboard',
+      pageTitle: 'Dashboard',
+      errorMessage: message
+    });
+  } else {
+    res.redirect('/admin/login');
+  }
+};
+
+exports.getCategory = async (req, res, next) => {
+  if (req.session.isLoggedIn) {
+    let message = req.flash('error');
+    res.render('admin/dashboard', {
+      path: '/dashboard',
+      pageTitle: 'Dashboard',
+      errorMessage: message
+    });
+  } else {
+    res.redirect('/admin/login');
+  }
+};
+
+exports.postCategory = async (req, res, next) => {
+  if (req.session.isLoggedIn) {
+    let message = req.flash('error');
+    res.render('admin/dashboard', {
+      path: '/dashboard',
+      pageTitle: 'Dashboard',
+      errorMessage: message
+    });
+  } else {
+    res.redirect('/admin/login');
+  }
+};
+
+exports.getCategoryDelete = async (req, res, next) => {
+  if (req.session.isLoggedIn) {
+    let message = req.flash('error');
+    res.render('admin/dashboard', {
+      path: '/dashboard',
+      pageTitle: 'Dashboard',
+      errorMessage: message
+    });
+  } else {
+    res.redirect('/admin/login');
+  }
 };

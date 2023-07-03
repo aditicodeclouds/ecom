@@ -7,3 +7,6 @@
 .text-success {
     color: green;
 }
+.float-right {
+    float: right;
+}

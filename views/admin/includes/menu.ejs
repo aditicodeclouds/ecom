@@ -74,27 +74,43 @@
           <div data-i18n="Analytics">Dashboard</div>
         </a>
       </li>
-
-      
-      <li class="menu-item">
+      <li class="menu-item <%= (path=='/admin/products' || path=='/admin/product' || path=='/admin/categories' || path=='/admin/category' ||path=='/admin/banners' ||  path=='/admin/banner') ? 'active open' : '' %>">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
-          <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
-          <div data-i18n="Authentications">Authentications</div>
+          <i class="menu-icon tf-icons bx bx-detail"></i>
+          <div data-i18n="Form Layouts">Elements</div>
         </a>
-        <ul class="menu-sub">
-          <li class="menu-item">
-            <a href="auth-login-basic.html" class="menu-link" target="_blank">
-              <div data-i18n="Basic">Login</div>
+        <ul class="menu-sub ">
+          <li class="menu-item <%= (path=='/admin/banners' || path=='/admin/banner') ? 'active' : '' %>">
+            <a href="/admin/banners" class="menu-link">
+              <div data-i18n="Vertical Form">Banners</div>
             </a>
           </li>
-          <li class="menu-item">
-            <a href="auth-register-basic.html" class="menu-link" target="_blank">
-              <div data-i18n="Basic">Register</div>
+          <li class="menu-item <%= (path=='/admin/categories' || path=='/admin/category') ? 'active' : '' %>">
+            <a href="/admin/categories" class="menu-link">
+              <div data-i18n="Horizontal Form">Category</div>
             </a>
           </li>
-          <li class="menu-item">
-            <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
-              <div data-i18n="Basic">Forgot Password</div>
+          <li class="menu-item <%= (path=='/admin/products' || path=='/admin/product') ? 'active' : '' %>">
+            <a href="/admin/product" class="menu-link">
+              <div data-i18n="Horizontal Form">Product</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="menu-item <%= (path=='/admin/user' || path=='/admin/order') ? 'active open' : '' %>">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons bx bx-detail"></i>
+          <div data-i18n="Form Layouts">Orders</div>
+        </a>
+        <ul class="menu-sub ">
+          <li class="menu-item <%= (path=='/admin/user') ? 'active' : '' %>">
+            <a href="/admin/user" class="menu-link">
+              <div data-i18n="Vertical Form">Customers</div>
+            </a>
+          </li>
+          <li class="menu-item <%= (path=='/admin/order') ? 'active' : '' %>">
+            <a href="/admin/order" class="menu-link">
+              <div data-i18n="Horizontal Form">Orders</div>
             </a>
           </li>
         </ul>
