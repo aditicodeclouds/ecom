@@ -31,5 +31,10 @@ router.get('/category/:id', adminController.getCategory);
 router.post('/category/:id', adminController.postCategory);
 router.get('/category-delete/:id', adminController.getCategoryDelete);
 
+router.get('/users', adminController.getUsers);
+
+router.get('/orders', adminController.getOrders);
+router.get('/order/:id', adminController.getOrder);
+
 module.exports = router;
 

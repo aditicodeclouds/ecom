@@ -1,0 +1,76 @@
+<%- include('../includes/header.ejs') %>
+
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Orders / </span> List</h4>
+      </div>
+    </div>
+
+    <!-- Basic Bootstrap Table -->
+    <div class="card">
+      <% if (errorMessage!='' ) { %>
+        <h5 class="card-header text-error">
+          <%= errorMessage %>
+        </h5>
+        <% } %>
+          <% if (successMessage!='' ) { %>
+            <h5 class="card-header text-success">
+              <%= successMessage %>
+            </h5>
+            <% } %>
+              <div class="table-responsive text-nowrap">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Order Number</th>
+                      <th>User</th>
+                      <th>Product</th>
+                      <th>Status</th>
+                      <th>Created At</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-border-bottom-0">
+                    <% if (orders.length> 0) { %>
+                      <% for (let order of orders) { %>
+                        <tr>
+                          <td>
+                            <strong>
+                              <%= order.order_number + '-' + order.id %>
+                            </strong>
+                          </td>
+                          <td>
+                            <%= order.user_id %>
+                          </td>
+                          <td>
+                            <%= order.product_id %>
+                          </td>
+                          <td>
+                            <span
+                              class="badge bg-label-<%= (order.status == 'Confirmed') ? 'primary' : ((order.status == 'Shipped') ? 'warning' : 'success') %> me-1">
+                            <%= order.status %>
+                              </span>
+                          </td>
+                          <td>
+                            <%= date.format(order.createdAt,'YYYY/MM/DD HH:mmA'); %>
+                          </td>
+                          <td>
+                            <a href="/admin/order/<%= order.id %>" title="view"><i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                          </td>
+                        </tr>
+                        <% } %>
+                          <% } else { %>
+                            <tr>
+                              <td colspan="5"><strong>No result found!</strong></td>
+                            </tr>
+                            <% } %>
+                  </tbody>
+                </table>
+              </div>
+    </div>
+  </div>
+
+
+  <%- include('../includes/footer.ejs') %>

@@ -1,0 +1,112 @@
+<%- include('../includes/header.ejs') %>
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Product / </span>
+            <%= ((typeof product.id == 'undefined' || product.id == '') ? 'Add' : 'Edit' ) %>
+        </h4>
+
+        <!-- Basic Layout & Basic with Icons -->
+        <div class="row">
+            <!-- Basic Layout -->
+            <div class="col-xxl">
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <% if (errorMessage!='' ) { %>
+                            <h5 class="mb-0 text-error">
+                                <%= errorMessage %>
+                            </h5>
+                            <% } %>
+                            <% if (successMessage!='' ) { %>
+                                <h5 class="mb-0 text-success">
+                                    <%= successMessage %>
+                                </h5>
+                                <% } %>
+                                        <!--<small class="text-muted float-end">Default label</small>-->
+                    </div>
+                    <div class="card-body">
+
+                        <form class="login-form"
+                            action="/admin/product/<%= ((typeof product.id == 'undefined' || product.id == '') ? 'add' : product.id ) %>"
+                            method="POST">
+                            <input type="hidden" name="id"
+                                value="<%= ((typeof product.id == 'undefined' || product.id == '') ? 'add' : product.id) %>" />
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" placeholder="Name"
+                                        name="name"
+                                        value="<%= ((typeof product.id == 'undefined' || product.id == '') ? '' : product.name) %>" />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Category</label>
+                                <div class="col-sm-10">categories
+                                    <select class="form-control" name="category_id">
+                                        <option value="">Select</option>
+                                        <% for (let category of categories) { %>
+                                            <option value="<%= category.id %>" <%= ((category.id == product.category_id)
+                                                ? 'selected' : '' ) %> ><%= category.name %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Image</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" placeholder="Image"
+                                        name="image"
+                                        value="<%= ((typeof product.id == 'undefined' || product.id == '') ? '' : product.image) %>" />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Price ($)</label>
+                                <div class="col-sm-10">
+                                    <input type="number" step=".01" class="form-control" placeholder="Price"
+                                        name="price"
+                                        value="<%= ((typeof product.id == 'undefined' || product.id == '') ? '' : product.price) %>" />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Description</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control"
+                                        name="description"><%= ((typeof product.id == 'undefined' || product.id == '') ? '' : product.description) %></textarea>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Stock</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" placeholder="Stock"
+                                        name="stock"
+                                        value="<%= ((typeof product.id == 'undefined' || product.id == '') ? '' : product.stock) %>" />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Status</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="active_status">
+                                        <option value="Y" <%= (((product.id !='undefined' && product.id !='') && product.active_status=='Y' )
+                                            ? 'selected' : '' ) %> >Active</option>
+                                        <option value="N" <%= (((product.id !='undefined' && product.id !='') && product.active_status=='N' )
+                                            ? 'selected' : '' ) %> >Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row justify-content-end">
+                                <div class="col-sm-10">
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                    <button type="submit" class="btn btn-primary">
+                                        <%= ((typeof product.id == 'undefined' || product.id == '') ? 'Save' : 'Update' ) %>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic with Icons -->
+
+        </div>
+    </div>
+
+    <%- include('../includes/footer.ejs') %>

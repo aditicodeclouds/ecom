@@ -2,7 +2,7 @@
 
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Banner / </span>
-            <%= ((banner.id !='undefined' ) ? 'Edit' : 'Add' ) %>
+            <%= ((typeof banner.id == 'undefined' || banner.id == '') ? 'Add' : 'Edit' ) %>
         </h4>
 
         <!-- Basic Layout & Basic with Icons -->
@@ -16,21 +16,26 @@
                                 <%= errorMessage %>
                             </h5>
                             <% } %>
+                            <% if (successMessage!='' ) { %>
+                                <h5 class="mb-0 text-success">
+                                    <%= successMessage %>
+                                </h5>
+                                <% } %>
                                         <!--<small class="text-muted float-end">Default label</small>-->
                     </div>
                     <div class="card-body">
 
                         <form class="login-form"
-                            action="/admin/banner/<%= ((banner.id != 'undefined') ? banner.id : 'add') %>"
+                            action="/admin/banner/<%= ((typeof banner.id == 'undefined' || banner.id == '') ? 'add' : banner.id ) %>"
                             method="POST">
                             <input type="hidden" name="id"
-                                value="<%= ((banner.id != 'undefined') ? banner.id : '') %>" />
+                                value="<%= ((typeof banner.id == 'undefined' || banner.id == '') ? 'add' : banner.id) %>" />
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-name">Heading1</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="Heading1"
                                         name="banner_heading1"
-                                        value="<%= ((banner.id != 'undefined') ? banner.banner_heading1 : '') %>" />
+                                        value="<%= ((typeof banner.id == 'undefined' || banner.id == '') ? '' : banner.banner_heading1) %>" />
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -38,31 +43,30 @@
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="Heading2"
                                         name="banner_heading2"
-                                        value="<%= ((banner.id != 'undefined') ? banner.banner_heading2 : '') %>" />
+                                        value="<%= ((typeof banner.id == 'undefined' || banner.id == '') ? '' : banner.banner_heading2) %>" />
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-name">Description</label>
                                 <div class="col-sm-10">
                                     <textarea rows="4" class="form-control" placeholder="Description"
-                                        name="banner_description"><%= ((banner.id != 'undefined') ? banner.banner_description : '') %></textarea>
+                                        name="banner_description"><%= ((typeof banner.id == 'undefined' || banner.id == '') ? '' : banner.banner_description) %></textarea>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-name">Link</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="Link" name="banner_link"
-                                        value="<%= ((banner.id != 'undefined') ? banner.banner_link : '') %>" />
+                                        value="<%= ((typeof banner.id == 'undefined' || banner.id == '') ? '' : banner.banner_link) %>" />
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-name">Status</label>
                                 <div class="col-sm-10">
                                     <select class="form-control" name="active_status">
-                                        <option value="">Select</option>
-                                        <option value="Y" <%=(((banner.id !='undefined' ) && banner.active_status=='Y' )
+                                        <option value="Y" <%= (((banner.id !='undefined' && banner.id !='') && banner.active_status=='Y' )
                                             ? 'selected' : '' ) %> >Active</option>
-                                        <option value="N" <%=(((banner.id !='undefined' ) && banner.active_status=='N' )
+                                        <option value="N" <%= (((banner.id !='undefined' && banner.id !='') && banner.active_status=='N' )
                                             ? 'selected' : '' ) %> >Inactive</option>
                                     </select>
                                 </div>
@@ -71,7 +75,7 @@
                                 <div class="col-sm-10">
                                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                     <button type="submit" class="btn btn-primary">
-                                        <%= ((banner.id !='undefined' ) ? 'Update' : 'Save' ) %>
+                                        <%= ((typeof banner.id == 'undefined' || banner.id == '') ? 'Save' : 'Update' ) %>
                                     </button>
                                 </div>
                             </div>

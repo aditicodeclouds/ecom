@@ -1,0 +1,58 @@
+<%- include('../includes/header.ejs') %>
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Category / </span>
+            <%= ((typeof category.id == 'undefined' || category.id == '') ? 'Add' : 'Edit' ) %>
+        </h4>
+
+        <!-- Basic Layout & Basic with Icons -->
+        <div class="row">
+            <!-- Basic Layout -->
+            <div class="col-xxl">
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <% if (errorMessage!='' ) { %>
+                            <h5 class="mb-0 text-error">
+                                <%= errorMessage %>
+                            </h5>
+                            <% } %>
+                            <% if (successMessage!='' ) { %>
+                                <h5 class="mb-0 text-success">
+                                    <%= successMessage %>
+                                </h5>
+                                <% } %>
+                                        <!--<small class="text-muted float-end">Default label</small>-->
+                    </div>
+                    <div class="card-body">
+
+                        <form class="login-form"
+                            action="/admin/category/<%= ((typeof category.id == 'undefined' || category.id == '') ? 'add' : category.id ) %>"
+                            method="POST">
+                            <input type="hidden" name="id"
+                                value="<%= ((typeof category.id == 'undefined' || category.id == '') ? 'add' : category.id) %>" />
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" placeholder="Name"
+                                        name="name"
+                                        value="<%= ((typeof category.id == 'undefined' || category.id == '') ? '' : category.name) %>" />
+                                </div>
+                            </div>
+                            <div class="row justify-content-end">
+                                <div class="col-sm-10">
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                    <button type="submit" class="btn btn-primary">
+                                        <%= ((typeof category.id == 'undefined' || category.id == '') ? 'Save' : 'Update' ) %>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic with Icons -->
+
+        </div>
+    </div>
+
+    <%- include('../includes/footer.ejs') %>

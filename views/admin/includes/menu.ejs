@@ -91,25 +91,25 @@
             </a>
           </li>
           <li class="menu-item <%= (path=='/admin/products' || path=='/admin/product') ? 'active' : '' %>">
-            <a href="/admin/product" class="menu-link">
+            <a href="/admin/products" class="menu-link">
               <div data-i18n="Horizontal Form">Product</div>
             </a>
           </li>
         </ul>
       </li>
-      <li class="menu-item <%= (path=='/admin/user' || path=='/admin/order') ? 'active open' : '' %>">
+      <li class="menu-item <%= (path=='/admin/users' || path=='/admin/orders') ? 'active open' : '' %>">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-detail"></i>
           <div data-i18n="Form Layouts">Orders</div>
         </a>
         <ul class="menu-sub ">
-          <li class="menu-item <%= (path=='/admin/user') ? 'active' : '' %>">
-            <a href="/admin/user" class="menu-link">
+          <li class="menu-item <%= (path=='/admin/users') ? 'active' : '' %>">
+            <a href="/admin/users" class="menu-link">
               <div data-i18n="Vertical Form">Customers</div>
             </a>
           </li>
-          <li class="menu-item <%= (path=='/admin/order') ? 'active' : '' %>">
-            <a href="/admin/order" class="menu-link">
+          <li class="menu-item <%= (path=='/admin/orders') ? 'active' : '' %>">
+            <a href="/admin/orders" class="menu-link">
               <div data-i18n="Horizontal Form">Orders</div>
             </a>
           </li>

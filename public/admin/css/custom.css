@@ -10,3 +10,7 @@
 .float-right {
     float: right;
 }
+.bg-label-error {
+    background-color: #fce6d7 !important;
+    color: red !important;
+}

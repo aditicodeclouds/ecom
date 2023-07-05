@@ -1,0 +1,76 @@
+<%- include('../includes/header.ejs') %>
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span> Order</h4>
+
+        <div class="card mb-4">
+            <% if (errorMessage!='' ) { %>
+                <h5 class="card-header text-error">
+                    <%= errorMessage %>
+                </h5>
+                <% } %>
+                    <% if (successMessage!='' ) { %>
+                        <h5 class="card-header text-success">
+                            <%= successMessage %>
+                        </h5>
+                        <% } %>
+                            <div class="card-body">
+                                <div class="row">
+                                    <!-- Basic List group -->
+                                    <div class="col-lg-12 mb-4 mb-xl-0">
+                                        <!--<small class="text-light fw-semibold">Basic</small>-->
+                                        <div class="demo-inline-spacing mt-3">
+                                            <div class="list-group">
+                                                <a href="javascript:void(0);"
+                                                    class="list-group-item list-group-item-action active">
+                                                    <%= order.order_number + '-' + order.id %>
+                                                </a>
+                                                <a href="javascript:void(0);"
+                                                    class="list-group-item list-group-item-action">
+                                                    <%= order.user_id %>
+                                                </a>
+                                                <a href="javascript:void(0);"
+                                                    class="list-group-item list-group-item-action">
+                                                    <%= order.product_id %>
+                                                </a>
+                                                <a href="javascript:void(0);"
+                                                    class="list-group-item list-group-item-action">$<%=
+                                                        order.product_price %> | <%= order.qty %>
+                                                </a>
+                                                <a href="javascript:void(0);"
+                                                    class="list-group-item list-group-item-action">
+                                                    <%= order.full_address %>
+                                                </a>
+                                                <a href="javascript:void(0);"
+                                                    class="list-group-item list-group-item-action">
+                                                    <span
+                              class="badge bg-label-<%= (order.status == 'Confirmed') ? 'primary' : ((order.status == 'Shipped') ? 'warning' : 'success') %> me-1">
+                                                    <%= order.status %>
+                                                    </span>
+                                                </a>
+                                                <a href="javascript:void(0);"
+                                                    class="list-group-item list-group-item-action">
+                                                    Placed on: <%= date.format(order.createdAt,'YYYY/MM/DD HH:mmA'); %>
+                                                </a>
+                                                <% if(order.status == 'Shipped' || order.status == 'Delivered') { %>
+                                                <a href="javascript:void(0);"
+                                                    class="list-group-item list-group-item-action">
+                                                    Shipped on: <%= date.format(order.shippedAt,'YYYY/MM/DD HH:mmA'); %>
+                                                </a>
+                                                <% } %>
+                                                <% if(order.status == 'Delivered') { %>
+                                                <a href="javascript:void(0);"
+                                                    class="list-group-item list-group-item-action">
+                                                    Delivered on: <%= date.format(order.deliveredAt	,'YYYY/MM/DD HH:mmA'); %>
+                                                </a>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        </div>
+    </div>
+
+
+    <%- include('../includes/footer.ejs') %>
