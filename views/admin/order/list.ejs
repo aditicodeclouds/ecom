@@ -41,10 +41,12 @@
                             </strong>
                           </td>
                           <td>
-                            <%= order.user_id %>
+                              <%= order.user.dataValues.name %> (#<%= order.user.dataValues.id %>)
                           </td>
                           <td>
-                            <%= order.product_id %>
+                            <a target="_blank" href="/admin/product/<%= order.product.dataValues.id %>">
+                              <%= order.product.dataValues.name %>
+                            </a>
                           </td>
                           <td>
                             <span

@@ -626,8 +626,10 @@ exports.getOrders = async (req, res, next) => {
     try {
       let message = req.flash('error');
       let sMessage = req.flash('success');
-      const orders = await Order.findAll();
-
+      const orders = await Order.findAll({ 
+        include: [{model: Product},{model: User}],
+      });
+      console.log(orders);
       res.render('admin/order/list', {
         path: '/admin/orders',
         pageTitle: 'Orders',
@@ -644,7 +646,6 @@ exports.getOrders = async (req, res, next) => {
   }
 };
 
-
 exports.getOrder = async (req, res, next) => {
   if (req.session.isLoggedIn) {
     try {
@@ -653,6 +654,7 @@ exports.getOrder = async (req, res, next) => {
       const id = req.params.id;
       const order = await Order.findOne({
         where: { id: id },
+        include: [{model: Product},{model: User}]
       });
       res.render('admin/order/view', {
         path: '/admin/order',
@@ -662,6 +664,37 @@ exports.getOrder = async (req, res, next) => {
         errorMessage: message,
         successMessage: sMessage,
       });
+    } catch (err) {
+      console.log(err);
+    }
+  } else {
+    res.redirect('/admin/login');
+  }
+};
+
+
+exports.getOrderStatus = async (req, res, next) => {
+  if (req.session.isLoggedIn) {
+    try {
+      let message = req.flash('error');
+      let sMessage = req.flash('success');
+      const id = req.params.id;
+      const order = await Order.findByPk(id);
+      let date_ob = new Date();
+      if(order.status=='Confirmed') {
+        order.shippedAt = date.format(date_ob,'YYYY-MM-DD HH:mm:ss');
+      } else {
+        order.deliveredAt = date.format(date_ob,'YYYY-MM-DD HH:mm:ss');
+      }
+      order.status = (order.status=='Confirmed'? 'Shipped' : 'Delivered');
+      let data = order.save();
+
+      if (data) {
+        req.flash('success', 'Order '+order.status+' successfully.');
+      } else {
+        req.flash('error', 'Something is going wrong. Please try again.');
+      }
+      res.redirect('/admin/order/'+id);
     } catch (err) {
       console.log(err);
     }

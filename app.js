@@ -82,6 +82,7 @@ Cart.belongsTo(Product, {foreignKey: 'product_id'});
 
 User.hasMany(Order, {foreignKey: 'user_id'});
 Product.hasMany(Order, {foreignKey: 'product_id'});
+Order.belongsTo(User, {foreignKey: 'user_id'});
 Order.belongsTo(Product, {foreignKey: 'product_id'});
 
 Category.hasMany(Product, {foreignKey: 'category_id'});

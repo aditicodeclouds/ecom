@@ -97,7 +97,7 @@
           </li>
         </ul>
       </li>
-      <li class="menu-item <%= (path=='/admin/users' || path=='/admin/orders') ? 'active open' : '' %>">
+      <li class="menu-item <%= (path=='/admin/users' || path=='/admin/orders' || path=='/admin/order') ? 'active open' : '' %>">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-detail"></i>
           <div data-i18n="Form Layouts">Orders</div>
@@ -108,7 +108,7 @@
               <div data-i18n="Vertical Form">Customers</div>
             </a>
           </li>
-          <li class="menu-item <%= (path=='/admin/orders') ? 'active' : '' %>">
+          <li class="menu-item <%= (path=='/admin/orders' || path=='/admin/order') ? 'active' : '' %>">
             <a href="/admin/orders" class="menu-link">
               <div data-i18n="Horizontal Form">Orders</div>
             </a>

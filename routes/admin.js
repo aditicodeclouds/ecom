@@ -35,6 +35,7 @@ router.get('/users', adminController.getUsers);
 
 router.get('/orders', adminController.getOrders);
 router.get('/order/:id', adminController.getOrder);
+router.get('/order-status/:id', adminController.getOrderStatus);
 
 module.exports = router;
 
