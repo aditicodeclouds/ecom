@@ -27,7 +27,7 @@
 
                         <form class="login-form"
                             action="/admin/product/<%= ((typeof product.id == 'undefined' || product.id == '') ? 'add' : product.id ) %>"
-                            method="POST">
+                            method="POST"  enctype="multipart/form-data">
                             <input type="hidden" name="id"
                                 value="<%= ((typeof product.id == 'undefined' || product.id == '') ? 'add' : product.id) %>" />
                             <div class="row mb-3">
@@ -53,9 +53,8 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-name">Image</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" placeholder="Image"
-                                        name="image"
-                                        value="<%= ((typeof product.id == 'undefined' || product.id == '') ? '' : product.image) %>" />
+                                    <input type="file" class="form-control" placeholder="Image"
+                                        name="image" />
                                 </div>
                             </div>
                             <div class="row mb-3">

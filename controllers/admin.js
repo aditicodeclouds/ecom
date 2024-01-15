@@ -524,6 +524,7 @@ exports.postProduct = async (req, res, next) => {
     try {
       let errorMessage = '';
       const id = req.body.id;
+      const image = req.file;
       console.log(typeof req.body.stock);
       console.log(typeof req.body.price);
       if (req.body.name == '') {
@@ -544,6 +545,9 @@ exports.postProduct = async (req, res, next) => {
       if (req.body.stock == '') {
         errorMessage += 'Stock can not be blank! / ';
       }
+      if (!image && id == 'add') {
+        errorMessage += 'Attached file is not an image. / ';
+      }
       if (errorMessage != '') {
         req.flash('error', errorMessage);
         return res.redirect('/admin/product/' + id);
@@ -557,7 +561,12 @@ exports.postProduct = async (req, res, next) => {
       }
       product.name = req.body.name;
       product.category_id = req.body.category_id;
-      product.image = req.body.image;
+      if (image) {
+        product.image = image.path;
+      }
+      if (image && id != 'add') {
+        fileHelper.deleteFile(product.imageUrl);
+      }
       product.price = req.body.price;
       product.description = req.body.description;
       product.stock = req.body.stock;
